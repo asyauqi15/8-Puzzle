@@ -5,39 +5,40 @@
     import queue
     import copy
 
-    global step
+    global step             #untuk menghitung jumlah step nantinya
     step = 0
-    q = queue.LifoQueue()
-    d = {}
+    q = queue.LifoQueue()   #karena BFS menggunakan queue yang LIFO
+    d = {}                  #dictionary untuk trace
 
-    data = [
+    data = [                #inisialisasi
         [1,2,3],
         [8,0,4],
         [7,6,5]
     ]
 
-    start = data
+    start = data            #inisialisasi start, karena nanti variable data akan berubah-ubah
 
-    goal = [
+    goal = [                #goal
         [8,1,3],
         [2,4,5],
         [7,6,0]
     ]
 
-    q.put(data)
+    q.put(data)             #memasukkan data pada queue
 
-    def find_zero(data):
+    def find_zero(data):       #fungsi untuk mencari koordinat 0
         for a in range(len(data)):
             for b in range(len(data)):
                 if data[a][b] == 0:
                     return (a,b)
 
-    def mapping(parent, child):
+    def mapping(parent, child):     #memasukkan hubungan tiap state pada dictionary, untuk trace
+        #diubah ke tupple karena dictionary tidak dapat menerima list 2 dimensi
         parent_tuple = (tuple(parent[0]), tuple(parent[1]), tuple(parent[2]))
         child_tuple = (tuple(child[0]), tuple(child[1]), tuple(child[2]))
-        d[child_tuple] = parent_tuple
+        d[child_tuple] = parent_tuple   #memasukkan ke tuple
 
-    def slide(data):
+    def slide(data):        #swap
         zero = find_zero(data)
         swap_able = [
             (zero[0]-1, zero[1]),
@@ -213,6 +214,7 @@
     global step
     step = 0
     q = []
+    #a* menggunakan list biasa
     d = {}
 
     data = [
@@ -295,6 +297,7 @@
                 print('\n')
         return
 
+    #h adalah jumlah jarak tiap angka ke goalnya
     def find_h(adata,agoal):
         h = 0
         for a in range(len(adata)):
@@ -306,6 +309,7 @@
                                 h += abs(a-c)+abs(b-d)
         return h
 
+    #g adalah berapa jumlah langkah untuk sampai ke state sekarang
     def find_g(adata, numb):
         global tuple_s
         if (tuple_s == adata):
@@ -314,13 +318,15 @@
             if(key == adata):
                 return find_g(value, numb+1)
 
+    #g+h
     def find_manhattan_value(adata):
         h = find_h(adata, goal)
         tuple_g = (tuple(adata[0]), tuple(adata[1]), tuple(adata[2]))
         g = find_g(tuple_g, 0)
         value = g + h
         return value
-
+    
+    #mencari index yang nilai manhattannya paling kecil
     def find_manhattan(q):
         for index in range(len(q)):
             if (index==0):
@@ -478,6 +484,7 @@
                     return q.pop(index)
         return q.pop(0)
 
+    #karena greedy tidak melihat nilai g, makanya dibuat fungsi baru untuk mencari index dengan nilai h terkecil
     def find_best_h(q):
         for index in range(len(q)):
             if (index==0):
