@@ -101,7 +101,7 @@
 
     print("Jumlah step yang dicoba = ", len(explored))
     print("Jumlah langkah = ", step)
-		```
+    ```
 
 ## BFS Color
     ```
