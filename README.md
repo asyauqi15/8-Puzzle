@@ -1,8 +1,8 @@
 # 8-Puzzle
 
 ## DFS
-		```
-		import queue
+    ```
+    import queue
     import copy
 
     global step
